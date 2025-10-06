@@ -17,6 +17,12 @@ importers:
       '@farcaster/miniapp-wagmi-connector':
         specifier: ^1.0.0
         version: 1.0.0(@farcaster/miniapp-sdk@0.1.10(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(@wagmi/core@2.21.2(@types/react@19.2.0)(react@19.1.0)(typescript@5.9.3)(viem@2.37.13(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))(viem@2.37.13(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))
+      '@vercel/analytics':
+        specifier: ^1.5.0
+        version: 1.5.0(next@15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@vercel/speed-insights':
+        specifier: ^1.2.0
+        version: 1.2.0(next@15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -881,6 +887,55 @@ packages:
 
   '@types/yargs@17.0.33':
     resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
+
+  '@vercel/analytics@1.5.0':
+    resolution: {integrity: sha512-MYsBzfPki4gthY5HnYN7jgInhAZ7Ac1cYDoRWFomwGHWEX7odTEzbtg9kf/QSo7XEsEAqlQugA6gJ2WS2DEa3g==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
+
+  '@vercel/speed-insights@1.2.0':
+    resolution: {integrity: sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@wagmi/core@2.21.2':
     resolution: {integrity: sha512-Rp4waam2z0FQUDINkJ91jq38PI5wFUHCv1YBL2LXzAQswaEk1ZY8d6+WG3vYGhFHQ22DXy2AlQ8IWmj+2EG3zQ==}
@@ -3172,6 +3227,16 @@ snapshots:
   '@types/yargs@17.0.33':
     dependencies:
       '@types/yargs-parser': 21.0.3
+
+  '@vercel/analytics@1.5.0(next@15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+    optionalDependencies:
+      next: 15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
+
+  '@vercel/speed-insights@1.2.0(next@15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)':
+    optionalDependencies:
+      next: 15.5.4(@babel/core@7.28.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 19.1.0
 
   '@wagmi/core@2.21.2(@types/react@19.2.0)(react@19.1.0)(typescript@5.9.3)(viem@2.37.13(bufferutil@4.0.9)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))':
     dependencies:
