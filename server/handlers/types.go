@@ -2,8 +2,8 @@ package handlers
 
 type Credentials struct {
 	EmailAddress string `json:"email_address"`
-	Password     string `json:"password"`
-	OTP          string `json:"otp"`
+	Password     string `json:"password,omitempty"`
+	OTP          string `json:"otp,omitempty"`
 }
 
 type Result struct {
