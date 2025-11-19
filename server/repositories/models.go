@@ -18,7 +18,6 @@ type Role string
 
 const (
 	RoleUSER  Role = "USER"
-	RoleBOT   Role = "BOT"
 	RoleADMIN Role = "ADMIN"
 )
 
@@ -57,57 +56,6 @@ func (ns NullRole) Value() (driver.Value, error) {
 	return string(ns.Role), nil
 }
 
-type Status string
-
-const (
-	StatusOPEN      Status = "OPEN"
-	StatusCLOSED    Status = "CLOSED"
-	StatusSUSPENDED Status = "SUSPENDED"
-)
-
-func (e *Status) Scan(src interface{}) error {
-	switch s := src.(type) {
-	case []byte:
-		*e = Status(s)
-	case string:
-		*e = Status(s)
-	default:
-		return fmt.Errorf("unsupported scan type for Status: %T", src)
-	}
-	return nil
-}
-
-type NullStatus struct {
-	Status Status `json:"status"`
-	Valid  bool   `json:"valid"` // Valid is true if Status is not NULL
-}
-
-// Scan implements the Scanner interface.
-func (ns *NullStatus) Scan(value interface{}) error {
-	if value == nil {
-		ns.Status, ns.Valid = "", false
-		return nil
-	}
-	ns.Valid = true
-	return ns.Status.Scan(value)
-}
-
-// Value implements the driver Valuer interface.
-func (ns NullStatus) Value() (driver.Value, error) {
-	if !ns.Valid {
-		return nil, nil
-	}
-	return string(ns.Status), nil
-}
-
-type Ticker struct {
-	ID     int32  `json:"id"`
-	Symbol string `json:"symbol"`
-	Base   string `json:"base"`
-	Quote  string `json:"quote"`
-	Status Status `json:"status"`
-}
-
 type User struct {
 	ID            uuid.UUID          `json:"id"`
 	FirstName     string             `json:"first_name"`
@@ -117,8 +65,8 @@ type User struct {
 	WalletAddress string             `json:"wallet_address"`
 	Password      string             `json:"password"`
 	Role          Role               `json:"role"`
-	FreeBalance   decimal.Decimal    `json:"free_balance"`
-	FrozenBalance decimal.Decimal    `json:"frozen_balance"`
+	Balance       decimal.Decimal    `json:"balance"`
+	Allowance     decimal.Decimal    `json:"allowance"`
 	CreatedAt     time.Time          `json:"created_at"`
 	UpdatedAt     time.Time          `json:"updated_at"`
 	DeletedAt     pgtype.Timestamptz `json:"deleted_at"`

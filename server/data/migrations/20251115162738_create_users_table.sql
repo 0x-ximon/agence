@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TYPE ROLE AS ENUM ('USER', 'BOT', 'ADMIN');
+CREATE TYPE ROLE AS ENUM ('USER', 'ADMIN');
 
 CREATE TABLE
   users (
@@ -15,8 +15,8 @@ CREATE TABLE
 
     password TEXT NOT NULL,
     role ROLE NOT NULL DEFAULT 'USER',
-    free_balance NUMERIC NOT NULL DEFAULT 0.0,
-    frozen_balance NUMERIC NOT NULL DEFAULT 0.0,
+    balance NUMERIC NOT NULL DEFAULT 0.0,
+    allowance NUMERIC NOT NULL DEFAULT 0.0,
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
