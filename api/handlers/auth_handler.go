@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/0x-ximon/agence/server/repositories"
-	"github.com/0x-ximon/agence/server/services"
+	"github.com/0x-ximon/agence/api/repositories"
+	"github.com/0x-ximon/agence/api/services"
 	"github.com/jackc/pgx/v5"
 )
 

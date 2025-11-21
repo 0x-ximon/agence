@@ -1,4 +1,4 @@
-module github.com/0x-ximon/agence/server
+module github.com/0x-ximon/agence/api
 
 go 1.25.0
 

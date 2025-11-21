@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/0x-ximon/agence/server/repositories"
-	"github.com/0x-ximon/agence/server/services"
+	"github.com/0x-ximon/agence/api/repositories"
+	"github.com/0x-ximon/agence/api/services"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 )

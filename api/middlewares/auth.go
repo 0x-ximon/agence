@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/0x-ximon/agence/server/services"
+	"github.com/0x-ximon/agence/api/services"
 )
 
 func Auth(next http.Handler) http.Handler {

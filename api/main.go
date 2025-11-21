@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/0x-ximon/agence/server/handlers"
-	"github.com/0x-ximon/agence/server/middlewares"
+	"github.com/0x-ximon/agence/api/handlers"
+	"github.com/0x-ximon/agence/api/middlewares"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
 )
