@@ -13,7 +13,7 @@ type AuthHandler struct {
 	Conn *pgx.Conn
 }
 
-func (h *AuthHandler) Initiatiate(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHandler) Initiate(w http.ResponseWriter, r *http.Request) {
 	repo := repositories.New(h.Conn)
 	ctx := r.Context()
 
