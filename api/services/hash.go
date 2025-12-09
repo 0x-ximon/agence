@@ -1,9 +1,9 @@
 package services
 
 import (
+	"context"
 	"crypto/rand"
 	"fmt"
-	"net/http"
 	"os"
 	"time"
 
@@ -14,10 +14,17 @@ import (
 
 type Claims struct {
 	jwt.RegisteredClaims
-	ID uuid.UUID `json:"id"`
+	ID            uuid.UUID
+	EmailAddress  string
+	WalletAddress string
 }
 
-type TokenKey struct{}
+type ClaimsKey struct{}
+
+func GetClaims(ctx context.Context) (Claims, bool) {
+	claims, ok := ctx.Value(ClaimsKey{}).(Claims)
+	return claims, ok
+}
 
 func GenerateOTP(length int) (string, error) {
 	bytes := make([]byte, length)
@@ -73,11 +80,6 @@ func ValidateJWT(tokenString string) (*Claims, error) {
 	}
 
 	return claims, nil
-}
-
-func GetToken(r *http.Request) (string, bool) {
-	token, ok := r.Context().Value(TokenKey{}).(string)
-	return token, ok
 }
 
 func HashPassword(password string) (string, error) {

@@ -19,7 +19,7 @@ func (h *UsersHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	repo := repositories.New(h.Conn)
 	ctx := r.Context()
 
-	token, ok := services.GetToken(r)
+	claims, ok := services.GetClaims(ctx)
 	if !ok {
 		w.WriteHeader(http.StatusUnauthorized)
 		result := Result{
@@ -36,18 +36,6 @@ func (h *UsersHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		result := Result{
 			Message: "invalid id",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	claims, err := services.ValidateJWT(token)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		result := Result{
-			Message: "could not validate token",
 			Error:   err,
 		}
 
@@ -225,7 +213,7 @@ func (h *UsersHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	repo := repositories.New(h.Conn)
 	ctx := r.Context()
 
-	token, ok := services.GetToken(r)
+	claims, ok := services.GetClaims(ctx)
 	if !ok {
 		w.WriteHeader(http.StatusUnauthorized)
 		result := Result{
@@ -246,18 +234,6 @@ func (h *UsersHandler) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(results)
-		return
-	}
-
-	claims, err := services.ValidateJWT(token)
-	if err != nil {
-		w.WriteHeader(http.StatusUnauthorized)
-		result := Result{
-			Message: "invalid token",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
 		return
 	}
 
