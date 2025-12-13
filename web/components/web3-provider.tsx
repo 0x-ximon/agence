@@ -1,116 +1,37 @@
 "use client";
 
-import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
-import { StandardConnect } from "@wallet-standard/core";
-import {
-  type UiWallet,
-  type UiWalletAccount,
-  useWallets,
-} from "@wallet-standard/react";
-import React from "react";
+import { AlgorandWalletConnectors } from "@dynamic-labs/algorand";
+import { BitcoinWalletConnectors } from "@dynamic-labs/bitcoin";
+import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
+import { SolanaWalletConnectors } from "@dynamic-labs/solana";
+import { DynamicWagmiConnector } from "@dynamic-labs/wagmi-connector";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type React from "react";
+import { WagmiProvider } from "wagmi";
+import { web3Config } from "@/lib/config";
 import { env } from "@/lib/env";
 
-type SolanaConnection = {
-  rpc: ReturnType<typeof createSolanaRpc>;
-  ws: ReturnType<typeof createSolanaRpcSubscriptions>;
-  chain: typeof env.NEXT_PUBLIC_SOLANA_CHAIN;
-
-  wallets: UiWallet[];
-  selectedWallet: UiWallet | null;
-  selectedAccount: UiWalletAccount | null;
-  isConnected: boolean;
-
-  setWalletAndAccount: (
-    wallet: UiWallet | null,
-    account: UiWalletAccount | null,
-  ) => void;
-};
-
-type Web3ContextType = {
-  base?: object;
-  solana: SolanaConnection;
-};
-
-export const Web3Context = React.createContext<Web3ContextType | null>(null);
-
-export function useWeb3() {
-  const context = React.useContext(Web3Context);
-  if (!context) {
-    throw new Error("useWeb3 must be used within a Web3Provider");
-  }
-
-  return context;
-}
-
-const solanaChain = env.NEXT_PUBLIC_SOLANA_CHAIN;
-const solanaRPC = createSolanaRpc(env.NEXT_PUBLIC_SOLANA_RPC_URL);
-const solanaWS = createSolanaRpcSubscriptions(env.NEXT_PUBLIC_SOLANA_WS_URL);
+const queryClient = new QueryClient();
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
-  const allWallets = useWallets();
-  console.debug("Available wallets:", allWallets);
-
-  const [selectedWallet, setSelectedWallet] = React.useState<UiWallet | null>(
-    null,
-  );
-  const [selectedAccount, setSelectedAccount] =
-    React.useState<UiWalletAccount | null>(null);
-
-  const wallets = React.useMemo(() => {
-    return allWallets.filter(
-      (wallet) =>
-        wallet.chains?.some((c) => c.startsWith("solana:")) &&
-        wallet.features.includes(StandardConnect) &&
-        wallet.features.includes("solana:signAndSendTransaction"),
-    );
-  }, [allWallets]);
-
-  const isConnected = React.useMemo(() => {
-    if (!selectedAccount || !selectedWallet) return false;
-
-    const currentWallet = wallets.find((w) => w.name === selectedWallet.name);
-    return !!currentWallet?.accounts.some(
-      (acc) => acc.address === selectedAccount.address,
-    );
-  }, [selectedAccount, selectedWallet, wallets]);
-
-  const setWalletAndAccount = React.useCallback(
-    (wallet: UiWallet | null, account: UiWalletAccount | null) => {
-      setSelectedWallet(wallet);
-      setSelectedAccount(account);
-    },
-    [],
-  );
-
-  const solana = React.useMemo<SolanaConnection>(
-    () => ({
-      ws: solanaWS,
-      rpc: solanaRPC,
-      chain: solanaChain,
-
-      wallets,
-      selectedWallet,
-      selectedAccount,
-      isConnected,
-      setWalletAndAccount,
-    }),
-
-    [
-      wallets,
-      selectedWallet,
-      selectedAccount,
-      isConnected,
-      setWalletAndAccount,
-    ],
-  );
-
   return (
-    <Web3Context.Provider
-      value={{
-        solana,
+    <DynamicContextProvider
+      settings={{
+        environmentId: env.NEXT_PUBLIC_DYNAMIC_ENV_ID,
+        walletConnectors: [
+          AlgorandWalletConnectors,
+          BitcoinWalletConnectors,
+          EthereumWalletConnectors,
+          SolanaWalletConnectors,
+        ],
       }}
     >
-      {children}
-    </Web3Context.Provider>
+      <WagmiProvider config={web3Config}>
+        <QueryClientProvider client={queryClient}>
+          <DynamicWagmiConnector>{children}</DynamicWagmiConnector>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </DynamicContextProvider>
   );
 }
