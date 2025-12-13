@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Header from "@/components/layout/header";
 import { Text } from "@/components/typography";
 import {
@@ -9,13 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import SigninForm from "@/modules/auth/components/signin-form";
+import AuthForm from "@/modules/auth/components/auth-form";
 
 export const metadata: Metadata = {
-  title: "Sign In",
+  title: "Auth",
 };
 
-export default function SigninPage() {
+export default function AuthPage() {
   return (
     <div className="w-full mx-auto">
       <Header />
@@ -25,21 +24,19 @@ export default function SigninPage() {
           <CardHeader className="w-full">
             <CardTitle>
               <Text variant="h2" className="text-center font-medium">
-                Sign in to your account
+                Authentication
               </Text>
             </CardTitle>
+
             <CardDescription>
               <Text variant="muted" className="text-center font-bold">
-                Or{" "}
-                <Link href="/auth/signup" className="text-primary">
-                  create a new account
-                </Link>
+                Sign in using your wallet or email address.
               </Text>
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
-            <SigninForm />
+          <CardContent className="space-y-4">
+            <AuthForm />
           </CardContent>
         </Card>
       </main>

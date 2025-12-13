@@ -13,7 +13,7 @@ export default function Header({ user }: Props) {
     <header className="flex justify-between items-center px-8 py-8">
       <Link href="/" className="text-primary">
         <Text variant="h2" className="border-none">
-          Mitter
+          Agence
         </Text>
       </Link>
 
