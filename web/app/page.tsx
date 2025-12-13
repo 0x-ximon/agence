@@ -11,18 +11,18 @@ export default function Home() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">📡</span>
             </div>
-            <span className="text-xl font-bold text-white">StreamVault</span>
+            <span className="text-xl font-bold text-white">Agence</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/host/login">
+            <Link href="/auth">
               <Button
                 variant="outline"
                 className="border-slate-600 text-slate-100 hover:bg-slate-700 bg-transparent"
               >
-                Host Login
+                Get Started
               </Button>
             </Link>
-            <Link href="/viewer/join">
+            <Link href="/streams/join">
               <Button className="bg-primary hover:bg-primary/90 text-slate-900">
                 Join Stream
               </Button>
@@ -42,12 +42,12 @@ export default function Home() {
             and earn instantly with blockchain-secured transactions.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/host/dashboard">
+            <Link href="/streams/new">
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-slate-900 text-lg px-8"
               >
-                Start Hosting
+                Start Streaming
               </Button>
             </Link>
             <Button
