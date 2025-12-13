@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AuthForm from "@/components/auth-form";
 import Header from "@/components/layout/header";
 import { Text } from "@/components/typography";
 import {
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import AuthForm from "@/modules/auth/components/auth-form";
 
 export const metadata: Metadata = {
   title: "Auth",
