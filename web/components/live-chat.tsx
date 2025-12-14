@@ -75,10 +75,7 @@ export function LiveChat({
 
   return (
     <Card
-      className={cn(
-        "bg-slate-800 border-slate-700 flex flex-col h-full",
-        className,
-      )}
+      className={cn("bg-slate-800 border-slate-700 flex flex-col", className)}
     >
       {/* Header */}
       <div className="p-4 border-b border-slate-700">

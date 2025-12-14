@@ -21,7 +21,12 @@ export default function AuthForm() {
   return (
     <div className="space-y-4">
       {authenticated ? (
-        <Button onClick={logout} type="submit" className="w-full">
+        <Button
+          variant="destructive"
+          onClick={logout}
+          type="submit"
+          className="w-full"
+        >
           Log Out
         </Button>
       ) : (
@@ -31,7 +36,7 @@ export default function AuthForm() {
       )}
 
       <Button
-        variant="secondary"
+        variant={authenticated ? "default" : "secondary"}
         disabled={!authenticated}
         onClick={() => router.push("/streams/join")}
         type="submit"

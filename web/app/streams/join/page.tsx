@@ -30,7 +30,7 @@ export default function JoinStreamPage() {
 
             <CardDescription>
               <Text variant="muted" className="text-center font-bold">
-                Enter details to Connect to an Ongoing Stream
+                Connect to Live Stream
               </Text>
             </CardDescription>
           </CardHeader>

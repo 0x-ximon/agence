@@ -42,7 +42,7 @@ export default function Home() {
             and earn instantly with blockchain-secured transactions.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <Link href="/streams/new">
+            <Link href="/streams/host">
               <Button
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-slate-900 text-lg px-8"

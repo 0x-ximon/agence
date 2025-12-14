@@ -42,7 +42,7 @@ export default function JoinStreamForm() {
   });
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-    const { key, rememberMe } = data;
+    let { key, rememberMe } = data;
 
     try {
       setLoading(true);
@@ -66,6 +66,9 @@ export default function JoinStreamForm() {
       }
 
       // TODO: Validate that Stream with Session Exists and Has Started
+
+      // Replace Space with Hyphen
+      key = key.replace(/\s/g, "-");
 
       toast.success("Connected to Stream");
       router.push(`/streams/${key}`);
