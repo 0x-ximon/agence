@@ -1,14 +1,14 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TYPE NETWORK AS ENUM ('ETHEREUM', 'SOLANA');
 
 CREATE TABLE
-  users (
+  wallets (
     ID UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 
-    name TEXT NULL,
-    user_name TEXT NULL,
-    email_address TEXT UNIQUE,
+    address TEXT NOT NULL UNIQUE,
+    network NETWORK NOT NULL,
+    owner UUID NOT NULL REFERENCES users(ID),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -18,6 +18,6 @@ CREATE TABLE
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE users;
-DROP TYPE ROLE;
+DROP TABLE wallets;
+DROP TYPE NETWORK;
 -- +goose StatementEnd

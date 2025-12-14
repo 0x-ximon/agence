@@ -32,15 +32,10 @@ func main() {
 	defer conn.Close(ctx)
 
 	chain := services.NewChain(
-		services.Auth,
 		services.ContentType,
 
 		middleware.Logger,
 	)
-
-	auth := &handlers.AuthHandler{Conn: conn}
-	mux.HandleFunc("POST /auth/initiate", auth.Initiate)
-	mux.HandleFunc("POST /auth/validate", auth.Validate)
 
 	users := &handlers.UsersHandler{Conn: conn}
 	mux.HandleFunc("GET /users", users.ListUsers)

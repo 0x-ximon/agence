@@ -19,18 +19,6 @@ func (h *UsersHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	repo := repositories.New(h.Conn)
 	ctx := r.Context()
 
-	claims, ok := services.GetClaims(ctx)
-	if !ok {
-		w.WriteHeader(http.StatusUnauthorized)
-		result := Result{
-			Message: "unauthorized",
-			Error:   fmt.Errorf("bearer token not found"),
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
 	id, err := uuid.Parse(r.PathValue("id"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -49,17 +37,6 @@ func (h *UsersHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 		result := Result{
 			Message: "user not found",
 			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	if user.ID != claims.ID {
-		w.WriteHeader(http.StatusUnauthorized)
-		result := Result{
-			Message: "unauthorized",
-			Error:   fmt.Errorf("user id mismatch"),
 		}
 
 		json.NewEncoder(w).Encode(result)
@@ -92,82 +69,11 @@ func (h *UsersHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	encryptedPassword, err := services.HashPassword(params.Password)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not hash password",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-	params.Password = encryptedPassword
-
 	user, err := repo.CreateUser(ctx, params)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		result := Result{
 			Message: "could not create user",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	otp, err := services.GenerateOTP(6)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not generate otp",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	mailer, err := services.NewMailService()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not create mailer",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	cacher, err := services.NewCacheService()
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not create cacher",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	if err := mailer.SendOTP(user.EmailAddress, otp); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not send otp",
-			Error:   err,
-		}
-
-		json.NewEncoder(w).Encode(result)
-		return
-	}
-
-	if err := cacher.StoreOTP(ctx, user.ID, otp); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		result := Result{
-			Message: "could not set otp",
 			Error:   err,
 		}
 

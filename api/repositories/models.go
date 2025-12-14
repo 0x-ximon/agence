@@ -11,63 +11,66 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
-	"github.com/shopspring/decimal"
 )
 
-type Role string
+type Network string
 
 const (
-	RoleUSER  Role = "USER"
-	RoleADMIN Role = "ADMIN"
+	NetworkETHEREUM Network = "ETHEREUM"
+	NetworkSOLANA   Network = "SOLANA"
 )
 
-func (e *Role) Scan(src interface{}) error {
+func (e *Network) Scan(src interface{}) error {
 	switch s := src.(type) {
 	case []byte:
-		*e = Role(s)
+		*e = Network(s)
 	case string:
-		*e = Role(s)
+		*e = Network(s)
 	default:
-		return fmt.Errorf("unsupported scan type for Role: %T", src)
+		return fmt.Errorf("unsupported scan type for Network: %T", src)
 	}
 	return nil
 }
 
-type NullRole struct {
-	Role  Role `json:"role"`
-	Valid bool `json:"valid"` // Valid is true if Role is not NULL
+type NullNetwork struct {
+	Network Network `json:"network"`
+	Valid   bool    `json:"valid"` // Valid is true if Network is not NULL
 }
 
 // Scan implements the Scanner interface.
-func (ns *NullRole) Scan(value interface{}) error {
+func (ns *NullNetwork) Scan(value interface{}) error {
 	if value == nil {
-		ns.Role, ns.Valid = "", false
+		ns.Network, ns.Valid = "", false
 		return nil
 	}
 	ns.Valid = true
-	return ns.Role.Scan(value)
+	return ns.Network.Scan(value)
 }
 
 // Value implements the driver Valuer interface.
-func (ns NullRole) Value() (driver.Value, error) {
+func (ns NullNetwork) Value() (driver.Value, error) {
 	if !ns.Valid {
 		return nil, nil
 	}
-	return string(ns.Role), nil
+	return string(ns.Network), nil
 }
 
 type User struct {
-	ID            uuid.UUID          `json:"id"`
-	FirstName     string             `json:"first_name"`
-	LastName      string             `json:"last_name"`
-	PhoneNumber   string             `json:"phone_number"`
-	EmailAddress  string             `json:"email_address"`
-	WalletAddress string             `json:"wallet_address"`
-	Password      string             `json:"password"`
-	Role          Role               `json:"role"`
-	Balance       decimal.Decimal    `json:"balance"`
-	Allowance     decimal.Decimal    `json:"allowance"`
-	CreatedAt     time.Time          `json:"created_at"`
-	UpdatedAt     time.Time          `json:"updated_at"`
-	DeletedAt     pgtype.Timestamptz `json:"deleted_at"`
+	ID           uuid.UUID          `json:"id"`
+	Name         *string            `json:"name"`
+	UserName     *string            `json:"user_name"`
+	EmailAddress *string            `json:"email_address"`
+	CreatedAt    time.Time          `json:"created_at"`
+	UpdatedAt    time.Time          `json:"updated_at"`
+	DeletedAt    pgtype.Timestamptz `json:"deleted_at"`
+}
+
+type Wallet struct {
+	ID        uuid.UUID          `json:"id"`
+	Address   string             `json:"address"`
+	Network   Network            `json:"network"`
+	Owner     uuid.UUID          `json:"owner"`
+	CreatedAt time.Time          `json:"created_at"`
+	UpdatedAt time.Time          `json:"updated_at"`
+	DeletedAt pgtype.Timestamptz `json:"deleted_at"`
 }

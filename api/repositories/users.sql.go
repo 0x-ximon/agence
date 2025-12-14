@@ -12,44 +12,24 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (
-    first_name, last_name, phone_number, email_address, wallet_address, role, password
-) VALUES ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, first_name, last_name, phone_number, email_address, wallet_address, password, role, balance, allowance, created_at, updated_at, deleted_at
+INSERT INTO users (name, user_name, email_address)
+VALUES ($1, $2, $3) RETURNING id, name, user_name, email_address, created_at, updated_at, deleted_at
 `
 
 type CreateUserParams struct {
-	FirstName     string `json:"first_name"`
-	LastName      string `json:"last_name"`
-	PhoneNumber   string `json:"phone_number"`
-	EmailAddress  string `json:"email_address"`
-	WalletAddress string `json:"wallet_address"`
-	Role          Role   `json:"role"`
-	Password      string `json:"password"`
+	Name         *string `json:"name"`
+	UserName     *string `json:"user_name"`
+	EmailAddress *string `json:"email_address"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRow(ctx, createUser,
-		arg.FirstName,
-		arg.LastName,
-		arg.PhoneNumber,
-		arg.EmailAddress,
-		arg.WalletAddress,
-		arg.Role,
-		arg.Password,
-	)
+	row := q.db.QueryRow(ctx, createUser, arg.Name, arg.UserName, arg.EmailAddress)
 	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.FirstName,
-		&i.LastName,
-		&i.PhoneNumber,
+		&i.Name,
+		&i.UserName,
 		&i.EmailAddress,
-		&i.WalletAddress,
-		&i.Password,
-		&i.Role,
-		&i.Balance,
-		&i.Allowance,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,
@@ -68,24 +48,18 @@ func (q *Queries) DeleteUser(ctx context.Context, id uuid.UUID) error {
 }
 
 const findUserByEmail = `-- name: FindUserByEmail :one
-SELECT id, first_name, last_name, phone_number, email_address, wallet_address, password, role, balance, allowance, created_at, updated_at, deleted_at FROM users
+SELECT id, name, user_name, email_address, created_at, updated_at, deleted_at FROM users
 WHERE email_address = $1 LIMIT 1
 `
 
-func (q *Queries) FindUserByEmail(ctx context.Context, emailAddress string) (User, error) {
+func (q *Queries) FindUserByEmail(ctx context.Context, emailAddress *string) (User, error) {
 	row := q.db.QueryRow(ctx, findUserByEmail, emailAddress)
 	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.FirstName,
-		&i.LastName,
-		&i.PhoneNumber,
+		&i.Name,
+		&i.UserName,
 		&i.EmailAddress,
-		&i.WalletAddress,
-		&i.Password,
-		&i.Role,
-		&i.Balance,
-		&i.Allowance,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,
@@ -94,7 +68,7 @@ func (q *Queries) FindUserByEmail(ctx context.Context, emailAddress string) (Use
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, first_name, last_name, phone_number, email_address, wallet_address, password, role, balance, allowance, created_at, updated_at, deleted_at FROM users
+SELECT id, name, user_name, email_address, created_at, updated_at, deleted_at FROM users
 WHERE ID = $1 LIMIT 1
 `
 
@@ -103,15 +77,9 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 	var i User
 	err := row.Scan(
 		&i.ID,
-		&i.FirstName,
-		&i.LastName,
-		&i.PhoneNumber,
+		&i.Name,
+		&i.UserName,
 		&i.EmailAddress,
-		&i.WalletAddress,
-		&i.Password,
-		&i.Role,
-		&i.Balance,
-		&i.Allowance,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,
@@ -120,7 +88,7 @@ func (q *Queries) GetUser(ctx context.Context, id uuid.UUID) (User, error) {
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, first_name, last_name, phone_number, email_address, wallet_address, password, role, balance, allowance, created_at, updated_at, deleted_at FROM users
+SELECT id, name, user_name, email_address, created_at, updated_at, deleted_at FROM users
 `
 
 func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
@@ -134,15 +102,9 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		var i User
 		if err := rows.Scan(
 			&i.ID,
-			&i.FirstName,
-			&i.LastName,
-			&i.PhoneNumber,
+			&i.Name,
+			&i.UserName,
 			&i.EmailAddress,
-			&i.WalletAddress,
-			&i.Password,
-			&i.Role,
-			&i.Balance,
-			&i.Allowance,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.DeletedAt,

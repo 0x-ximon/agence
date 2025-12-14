@@ -36,12 +36,7 @@ func NewCacheService() (*CacheService, error) {
 }
 
 func (c *CacheService) StoreOTP(ctx context.Context, id uuid.UUID, otp string) error {
-	err := c.client.Set(ctx, id.String(), otp, 30*time.Minute).Err()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return c.client.Set(ctx, id.String(), otp, 30*time.Minute).Err()
 }
 
 func (c *CacheService) RetrieveOTP(ctx context.Context, id uuid.UUID) (string, error) {
@@ -54,10 +49,12 @@ func (c *CacheService) RetrieveOTP(ctx context.Context, id uuid.UUID) (string, e
 }
 
 func (c *CacheService) DeleteOTP(ctx context.Context, id uuid.UUID) error {
-	err := c.client.Del(ctx, id.String()).Err()
-	if err != nil {
-		return err
-	}
+	return c.client.Del(ctx, id.String()).Err()
+}
+
+func (c *CacheService) Subscribe(ctx context.Context, channel string) *redis.PubSub {
+	return c.client.Subscribe(ctx, channel)
+}
 
 	return nil
 }
