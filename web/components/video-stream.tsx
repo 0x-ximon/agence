@@ -1,8 +1,7 @@
 "use client";
 
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import React from "react";
-import { cn } from "@/lib/utils";
-import { Text } from "./typography";
 
 interface VideoStreamProps {
   stream?: MediaStream | null;
@@ -37,13 +36,13 @@ export function VideoStream({
   }, [stream]);
 
   return (
-    <div>
+    <AspectRatio ratio={16 / 9}>
       <video
         ref={videoRef}
         autoPlay={autoPlay}
         playsInline={playsInline}
         muted={muted}
-        className="w-full h-full object-cover"
+        className="w-full h-full rounded-2xl"
       />
 
       {/* {!stream && (
@@ -53,6 +52,6 @@ export function VideoStream({
           </Text>
         </div>
       )} */}
-    </div>
+    </AspectRatio>
   );
 }

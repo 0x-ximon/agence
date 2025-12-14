@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import AuthForm from "@/components/auth-form";
-import Header from "@/components/layout/header";
+import Header from "@/components/header";
 import { Text } from "@/components/typography";
 import {
   Card,

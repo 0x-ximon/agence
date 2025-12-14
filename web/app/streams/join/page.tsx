@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Header from "@/components/header";
 import JoinStreamForm from "@/components/join-stream-form";
-import Header from "@/components/layout/header";
 import { Text } from "@/components/typography";
 import {
   Card,

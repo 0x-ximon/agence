@@ -8,14 +8,15 @@ export const metadata: Metadata = {
 
 export default function HostStreamPage() {
   return (
-    <div className="w-full h-screen p-8 space-y-8 grid lg:grid-cols-4 gap-8">
-      <div className="grid lg:col-span-3 h-full">
-        <Stream />
+    <div className="w-full h-screen p-4 grid lg:grid-cols-4 gap-4">
+      <div className="grid lg:col-span-3">
+        <Stream isHost={true} />
       </div>
 
-      <div className="grid lg:grid-rows-2 gap-8">
-        <LiveChat />
-        <LiveChat />
+      <div className="grid lg:grid-rows-3 gap-4">
+        <div className="grid lg:row-span-2">
+          <LiveChat />
+        </div>
       </div>
     </div>
   );
