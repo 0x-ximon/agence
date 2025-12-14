@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import AuthForm from "@/components/auth-form";
 import Header from "@/components/header";
+import JoinStreamForm from "@/components/join-stream-form";
 import { Text } from "@/components/typography";
 import {
   Card,
@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Auth",
+  title: "Join Stream",
 };
 
-export default function AuthPage() {
+export default function JoinStreamPage() {
   return (
     <div className="w-full mx-auto">
       <Header />
@@ -24,19 +24,19 @@ export default function AuthPage() {
           <CardHeader className="w-full">
             <CardTitle>
               <Text variant="h2" className="text-center font-medium">
-                Authentication
+                Join a Stream
               </Text>
             </CardTitle>
 
             <CardDescription>
               <Text variant="muted" className="text-center font-bold">
-                Sign in using your wallet or email address.
+                Connect to Live Stream
               </Text>
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-4">
-            <AuthForm />
+            <JoinStreamForm />
           </CardContent>
         </Card>
       </main>

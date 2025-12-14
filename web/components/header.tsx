@@ -10,11 +10,9 @@ type Props = {
 };
 export default function Header({ user }: Props) {
   return (
-    <header className="flex justify-between items-center px-8 py-8">
+    <header className="flex justify-between items-center px-8 py-4">
       <Link href="/" className="text-primary">
-        <Text variant="h2" className="border-none">
-          Agence
-        </Text>
+        <Text variant="h3">Agence</Text>
       </Link>
 
       {user && (
